@@ -373,9 +373,9 @@ async function start() {
       console.log("Server running on port:", PORT);
     });
 
-    startDailyReportJob();
+    // startDailyReportJob();
   } catch (err) {
-    console.error("Server failed to start:", err);
+    console.error("Server error:", err);
   }
 }
 
