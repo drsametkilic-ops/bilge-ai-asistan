@@ -24,6 +24,14 @@ import { startDailyReportJob } from "./jobs/dailyEmail.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("Unhandled Rejection:", err);
+});
+
 // Önce proje kökü .env (MONGO_URI, paylaşılan anahtarlar); cwd'ye bağlı kalma.
 dotenv.config({ path: path.join(__dirname, "..", ".env") });
 // server/.env varsa üsttekini ezer (PORT, OPENAI vb.); tanımlı olmayanlar kökten kalır.
@@ -375,7 +383,7 @@ async function start() {
 
     // startDailyReportJob();
   } catch (err) {
-    console.error("Server error:", err);
+    console.error("Server failed to start:", err);
   }
 }
 
