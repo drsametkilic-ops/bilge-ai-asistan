@@ -37,8 +37,10 @@ dotenv.config({ path: path.join(__dirname, "..", ".env") });
 // server/.env varsa üsttekini ezer (PORT, OPENAI vb.); tanımlı olmayanlar kökten kalır.
 dotenv.config({ path: path.join(__dirname, ".env"), override: true });
 
-console.log("API KEY:", process.env.OPENAI_API_KEY ? "VAR" : "YOK");
-console.log("MONGO_URI:", process.env.MONGO_URI?.trim() ? "tanımlı" : "YOK");
+console.log("ENV CHECK:");
+console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY ? "OK" : "MISSING");
+console.log("MONGO_URI:", process.env.MONGO_URI ? "OK" : "MISSING");
+console.log("PORT:", process.env.PORT);
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
