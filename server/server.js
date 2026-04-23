@@ -363,41 +363,19 @@ app.post("/webhook", (req, res) => {
 
 app.use((_req, res) => res.status(404).json({ error: "Not found" }));
 
-/**
- * Port doluysa sıradaki porta geç (5002 → 5003 → …).
- */
-function listenFrom(port, maxPort = 5100) {
-  return new Promise((resolve, reject) => {
-    if (port > maxPort) {
-      reject(new Error(`Boş port bulunamadı (${maxPort}'e kadar denendi)`));
-      return;
-    }
-    const srv = app.listen(port, () => {
-      console.log("Server running on port:", port);
-      console.log(`Bilge API running on http://localhost:${port}`);
-      resolve(srv);
-    });
-    srv.once("error", (err) => {
-      if (/** @type {NodeJS.ErrnoException} */ (err).code === "EADDRINUSE") {
-        srv.close(() => {
-          listenFrom(port + 1, maxPort).then(resolve).catch(reject);
-        });
-      } else {
-        reject(err);
-      }
-    });
-  });
-}
-
 async function start() {
   try {
     await connectDB();
-    const preferred = Number(process.env.PORT) || 5001;
-    await listenFrom(preferred);
+
+    const PORT = process.env.PORT || 5001;
+
+    app.listen(PORT, () => {
+      console.log("Server running on port:", PORT);
+    });
+
     startDailyReportJob();
   } catch (err) {
-    console.error("Sunucu başlatılamadı:", err);
-    process.exit(1);
+    console.error("Server failed to start:", err);
   }
 }
 
