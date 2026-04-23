@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply antialiased text-slate-800 bg-app-bg;
+  }
+  body {
+    @apply min-h-dvh;
+  }
+}
+
+@layer utilities {
+  .safe-pb {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
